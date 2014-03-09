@@ -61,8 +61,14 @@ public class TheGame extends GameThread{
 	@Override
 	protected void actionOnTouch(float x, float y) {
 		//Increase/decrease the speed of the ball making the ball move towards the touch
-		mBallSpeedX = x - mBallX;
-		mBallSpeedY = y - mBallY;
+		//mBallSpeedX = x - mBallX;
+		//mBallSpeedY = y - mBallY;
+		mBallX = x;
+		mBallY = y;
+		
+		mBallSpeedX = (x - mBallX)*2;
+		mBallSpeedY = (y - mBallY)*2;
+		
 	}
 	
 	
