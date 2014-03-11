@@ -61,13 +61,13 @@ public class TheGame extends GameThread{
 	@Override
 	protected void actionOnTouch(float x, float y) {
 		//Increase/decrease the speed of the ball making the ball move towards the touch
-		//mBallSpeedX = x - mBallX;
-		//mBallSpeedY = y - mBallY;
-		mBallX = x;
-		mBallY = y;
+		mBallSpeedX = x - mBallX;
+		mBallSpeedY = y - mBallY;
+		//mBallX = x;
+		//mBallY = y;
 		
-		mBallSpeedX = (x - mBallX)*2;
-		mBallSpeedY = (y - mBallY)*2;
+		//mBallSpeedX = (x - mBallX)*2;
+		//mBallSpeedY = (y - mBallY)*2;
 		
 	}
 	
@@ -85,6 +85,12 @@ public class TheGame extends GameThread{
 	//This is run just before the game "scenario" is printed on the screen
 	@Override
 	protected void updateGame(float secondsElapsed) {
+		if((mBallX <= mBall.getWidth()/2 && mBallSpeedX < 0 )|| (mBallX >= mCanvasWidth - mBall.getWidth()/2 && mBallSpeedX > 0)) {
+			mBallSpeedX = -mBallSpeedX;
+		}
+		if((mBallY <= mBall.getHeight()/2 && mBallSpeedY < 0 )|| (mBallY >= mCanvasHeight - mBall.getHeight()/2 && mBallSpeedY > 0)) {
+			mBallSpeedY = -mBallSpeedY;
+		}
 		//Move the ball's X and Y using the speed (pixel/sec)
 		mBallX = mBallX + secondsElapsed * mBallSpeedX;
 		mBallY = mBallY + secondsElapsed * mBallSpeedY;
