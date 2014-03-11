@@ -18,6 +18,9 @@ public class TheGame extends GameThread{
 	private float mBallSpeedX = 0;
 	private float mBallSpeedY = 0;
 
+	private Bitmap mPaddle;
+	private float mPaddleX = 0;
+	
 	//This is run before anything else, so we can prepare things here
 	public TheGame(GameView gameView) {
 		//House keeping
@@ -27,19 +30,25 @@ public class TheGame extends GameThread{
 		mBall = BitmapFactory.decodeResource
 				(gameView.getContext().getResources(), 
 				R.drawable.small_red_ball);
+		
+		mPaddle = BitmapFactory.decodeResource
+				(gameView.getContext().getResources(), 
+				R.drawable.yellow_ball);
 	}
 	
 	//This is run before a new game (also after an old game)
 	@Override
 	public void setupBeginning() {
 		//Initialise speeds
-		mBallSpeedX = 0; 
-		mBallSpeedY = 0;
+		mBallSpeedX = -100; 
+		mBallSpeedY = -100;
 		
 		//Place the ball in the middle of the screen.
 		//mBall.Width() and mBall.getHeigh() gives us the height and width of the image of the ball
 		mBallX = mCanvasWidth / 2;
 		mBallY = mCanvasHeight / 2;
+		
+		mPaddleX = mCanvasWidth / 2;;
 	}
 
 	@Override
@@ -54,6 +63,7 @@ public class TheGame extends GameThread{
 		//drawBitmap uses top left corner as reference, we use middle of picture
 		//null means that we will use the image without any extra features (called Paint)
 		canvas.drawBitmap(mBall, mBallX - mBall.getWidth() / 2, mBallY - mBall.getHeight() / 2, null);
+		canvas.drawBitmap(mPaddle, mPaddleX - mPaddle.getWidth() / 2, mCanvasHeight - mPaddle.getHeight() / 2, null);
 	}
 	
 	//This is run whenever the phone is touched by the user
@@ -61,26 +71,33 @@ public class TheGame extends GameThread{
 	@Override
 	protected void actionOnTouch(float x, float y) {
 		//Increase/decrease the speed of the ball making the ball move towards the touch
-		mBallSpeedX = x - mBallX;
-		mBallSpeedY = y - mBallY;
+		//mBallSpeedX = x - mBallX;
+		//mBallSpeedY = y - mBallY;
 		//mBallX = x;
 		//mBallY = y;
 		
 		//mBallSpeedX = (x - mBallX)*2;
 		//mBallSpeedY = (y - mBallY)*2;
 		
+		mPaddleX = x - mPaddle.getWidth() / 2;
+		
 	}
 	
 	
-	/*
+	
 	//This is run whenever the phone moves around its axises 
 	@Override
 	protected void actionWhenPhoneMoved(float xDirection, float yDirection, float zDirection) {
 		//Increase/decrease the speed of the ball
-		mBallSpeedX = mBallSpeedX - 1.5f * xDirection;
-		mBallSpeedY = mBallSpeedY - 1.5f * yDirection;
+		//mBallSpeedX = mBallSpeedX - 1.5f * xDirection;
+		//mBallSpeedY = mBallSpeedY - 1.5f * yDirection;
+		if(mPaddleX >=0 && mPaddleX <= mCanvasWidth){
+			mPaddleX = mPaddleX - xDirection;
+			if(mPaddleX < 0) mPaddleX = 0;
+			if(mPaddleX > mCanvasWidth) mPaddleX = mCanvasWidth;		
+		}
 	}
-	*/
+	
 	
 	//This is run just before the game "scenario" is printed on the screen
 	@Override
